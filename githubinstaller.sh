@@ -1,7 +1,11 @@
 #!/bin/bash
 
+# ==================================================
+# 🚀 ITZ_YTANSH ULTIMATE INSTALLER
+# ==================================================
+
 # =========================
-# 🚀 FORCE TERMINAL INPUT FIX
+# 🧠 FIX TERMINAL INPUT
 # =========================
 if [[ ! -t 0 ]]; then
     exec < /dev/tty
@@ -21,40 +25,40 @@ BOLD='\033[1m'
 NC='\033[0m'
 
 # =========================
-# 🧠 FUNCTIONS
+# 🎬 FUNCTIONS
 # =========================
 pause_screen() {
     echo ""
     read -r -p "👉 Press Enter To Continue..." temp
 }
 
-loading_animation() {
-    echo -e "${CYAN}⚡ Processing Please Wait...${NC}"
+loading() {
+    echo -e "${CYAN}⚡ Processing Request...${NC}"
     sleep 1
 }
 
 # =========================
-# 🚀 STARTUP
+# 🚀 BOOT SEQUENCE
 # =========================
 clear
 
 echo -e "${CYAN}${BOLD}"
-echo "⚡ Initializing Installer..."
+echo "⚡ Initializing Ultimate Installer..."
 sleep 1
-echo "🌌 Loading Deployment Engine..."
+echo "🌌 Connecting Deployment Matrix..."
 sleep 1
-echo "🧠 Syncing Modules..."
+echo "🧠 Syncing Quantum Modules..."
 sleep 1
-echo "🔐 Verifying Environment..."
+echo "🔐 Verifying Secure Environment..."
 sleep 1
-echo "🚀 Launching Ultimate Installer..."
+echo "🚀 Launching Installer Core..."
 sleep 1
 echo -e "${NC}"
 
 clear
 
 # =========================
-# 🎬 BANNER
+# 🎨 BANNER
 # =========================
 echo -e "${MAGENTA}${BOLD}"
 echo "██╗████████╗███████╗    ██╗   ██╗████████╗ █████╗ ███╗   ██╗███████╗██╗  ██╗"
@@ -64,7 +68,7 @@ echo "██║   ██║    ███╔╝        ╚██╔╝     ██
 echo "██║   ██║   ███████╗       ██║      ██║   ██║  ██║██║ ╚████║███████║██║  ██║"
 echo "╚═╝   ╚═╝   ╚══════╝       ╚═╝      ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝"
 echo ""
-echo "               🚀 ITZ_YTANSH ULTIMATE INSTALLER 🚀"
+echo "             🚀 ITZ_YTANSH ULTIMATE INSTALLER 🚀"
 echo -e "${NC}"
 
 echo -e "${CYAN}"
@@ -105,8 +109,10 @@ echo -e "${BLUE}${BOLD}║          🚀 MAIN MENU           ║${NC}"
 echo -e "${BLUE}${BOLD}╠══════════════════════════════════╣${NC}"
 echo -e "${GREEN}║ [1] 🎮 Install AstroWax Panel   ║${NC}"
 echo -e "${CYAN}║ [2] 🌐 Install WaxDaemon Node   ║${NC}"
-echo -e "${YELLOW}║ [3] ⭐ Subscribe Channel        ║${NC}"
-echo -e "${RED}║ [4] ❌ Exit Installer           ║${NC}"
+echo -e "${YELLOW}║ [3] 🔄 Restart AstroWax Panel   ║${NC}"
+echo -e "${MAGENTA}║ [4] ♻️ Restart WaxDaemon Node   ║${NC}"
+echo -e "${WHITE}║ [5] ⭐ Subscribe Channel        ║${NC}"
+echo -e "${RED}║ [6] ❌ Exit Installer           ║${NC}"
 echo -e "${BLUE}${BOLD}╚══════════════════════════════════╝${NC}"
 
 echo ""
@@ -119,6 +125,9 @@ read -r -p "👉 Select Option: " option
 
 case "$option" in
 
+# ==================================================
+# 🎮 INSTALL PANEL
+# ==================================================
 1)
 clear
 
@@ -189,7 +198,6 @@ npm run createUser
 echo -e "${CYAN}🚀 Launching AstroWax Panel With PM2...${NC}"
 
 pm2 delete astrowax-panel >/dev/null 2>&1
-
 pm2 start node --name astrowax-panel -- .
 
 pm2 save
@@ -207,6 +215,9 @@ echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━
 pause_screen
 ;;
 
+# ==================================================
+# 🌐 INSTALL NODE
+# ==================================================
 2)
 clear
 
@@ -249,7 +260,7 @@ echo ""
 echo -e "${CYAN}Example:${NC}"
 echo "npm run configure -- --panel https://yourdomain --key xxxxxxxx-xxxx-xxxx"
 echo ""
-echo -e "${GREEN}⚡ Panel URL Auto Converts To:${NC} http://localhost:3000"
+echo -e "${GREEN}⚡ URL AUTO CHANGES TO:${NC} http://localhost:3000"
 echo ""
 
 if [[ ! -t 0 ]]; then
@@ -264,7 +275,7 @@ echo ""
 echo -e "${CYAN}🧠 Processing Configuration...${NC}"
 sleep 2
 
-echo -e "${GREEN}✅ Panel URL Converted Successfully${NC}"
+echo -e "${GREEN}✅ URL Converted Successfully${NC}"
 sleep 1
 
 echo -e "${CYAN}🚀 Executing Configure Command...${NC}"
@@ -274,7 +285,6 @@ eval "$fixedcmd"
 echo -e "${CYAN}🚀 Launching WaxDaemon With PM2...${NC}"
 
 pm2 delete waxdaemon >/dev/null 2>&1
-
 pm2 start index.js --name waxdaemon
 
 pm2 save
@@ -291,7 +301,52 @@ echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━
 pause_screen
 ;;
 
+# ==================================================
+# 🔄 RESTART PANEL
+# ==================================================
 3)
+clear
+
+echo -e "${YELLOW}${BOLD}🔄 RESTARTING ASTROWAX PANEL 🔄${NC}"
+sleep 2
+
+pm2 restart astrowax-panel
+
+echo ""
+echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+echo -e "${GREEN}✅ AstroWax Panel Restarted${NC}"
+echo -e "${GREEN}🚀 Running In Background${NC}"
+echo -e "${GREEN}⚡ PM2 Protection Active${NC}"
+echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+
+pause_screen
+;;
+
+# ==================================================
+# ♻️ RESTART NODE
+# ==================================================
+4)
+clear
+
+echo -e "${MAGENTA}${BOLD}♻️ RESTARTING WAXDAEMON NODE ♻️${NC}"
+sleep 2
+
+pm2 restart waxdaemon
+
+echo ""
+echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+echo -e "${GREEN}✅ WaxDaemon Restarted${NC}"
+echo -e "${GREEN}🚀 Running Again${NC}"
+echo -e "${GREEN}⚡ PM2 Protection Active${NC}"
+echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+
+pause_screen
+;;
+
+# ==================================================
+# ⭐ SUBSCRIBE
+# ==================================================
+5)
 clear
 
 echo -e "${MAGENTA}${BOLD}⭐ OPENING OFFICIAL CHANNEL ⭐${NC}"
@@ -310,13 +365,18 @@ echo -e "${GREEN}❤️ Thanks For Supporting AstroVoidHost${NC}"
 pause_screen
 ;;
 
-4)
+# ==================================================
+# ❌ EXIT
+# ==================================================
+6)
 clear
 
 echo -e "${RED}${BOLD}"
 echo "💀 Shutting Down Installer..."
 sleep 1
 echo "🌌 Saving Session..."
+sleep 1
+echo "🧠 Disconnecting Quantum Modules..."
 sleep 1
 echo "🚀 Goodbye Legend..."
 sleep 1
@@ -325,9 +385,12 @@ echo -e "${NC}"
 exit 0
 ;;
 
+# ==================================================
+# ❌ INVALID
+# ==================================================
 *)
 echo ""
-echo -e "${RED}❌ Invalid Option Selected! Please Choose 1-4${NC}"
+echo -e "${RED}❌ Invalid Option Selected! Please Choose 1-6${NC}"
 sleep 1
 ;;
 
