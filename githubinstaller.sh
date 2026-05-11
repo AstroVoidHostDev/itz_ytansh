@@ -1,6 +1,13 @@
 #!/bin/bash
 
 # =========================
+# 🚀 FORCE TERMINAL INPUT FIX
+# =========================
+if [[ ! -t 0 ]]; then
+    exec < /dev/tty
+fi
+
+# =========================
 # 🎨 COLORS
 # =========================
 RED='\033[1;31m'
@@ -13,11 +20,24 @@ WHITE='\033[1;37m'
 BOLD='\033[1m'
 NC='\033[0m'
 
-clear
+# =========================
+# 🧠 FUNCTIONS
+# =========================
+pause_screen() {
+    echo ""
+    read -r -p "👉 Press Enter To Continue..." temp
+}
+
+loading_animation() {
+    echo -e "${CYAN}⚡ Processing Please Wait...${NC}"
+    sleep 1
+}
 
 # =========================
-# 🚀 BOOT ANIMATION
+# 🚀 STARTUP
 # =========================
+clear
+
 echo -e "${CYAN}${BOLD}"
 echo "⚡ Initializing Installer..."
 sleep 1
@@ -26,6 +46,8 @@ sleep 1
 echo "🧠 Syncing Modules..."
 sleep 1
 echo "🔐 Verifying Environment..."
+sleep 1
+echo "🚀 Launching Ultimate Installer..."
 sleep 1
 echo -e "${NC}"
 
@@ -42,7 +64,7 @@ echo "██║   ██║    ███╔╝        ╚██╔╝     ██
 echo "██║   ██║   ███████╗       ██║      ██║   ██║  ██║██║ ╚████║███████║██║  ██║"
 echo "╚═╝   ╚═╝   ╚══════╝       ╚═╝      ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝"
 echo ""
-echo "                    🚀 ITZ_YTANSH INSTALLER ACTIVATED 🚀"
+echo "               🚀 ITZ_YTANSH ULTIMATE INSTALLER 🚀"
 echo -e "${NC}"
 
 echo -e "${CYAN}"
@@ -50,6 +72,7 @@ echo "━━━━━━━━━━━━━━━━━━━━━━━━�
 echo "💻 Advanced Hosting Deployment Installer"
 echo "⚡ Fast • Secure • Fully Automated"
 echo "🔥 Powered By ITZ_YTANSH"
+echo "🌐 Premium Deployment Experience"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo -e "${NC}"
 
@@ -61,9 +84,13 @@ sleep 2
 echo -e "${GREEN}🔍 Checking System Information...${NC}"
 sleep 1
 
-echo -e "${YELLOW}🖥️ OS:${NC} $(lsb_release -ds 2>/dev/null)"
-echo -e "${YELLOW}💾 RAM:${NC} $(free -h | awk '/Mem:/ {print $2}')"
-echo -e "${YELLOW}🧠 CPU:${NC} $(nproc) Cores"
+OS_NAME=$(lsb_release -ds 2>/dev/null)
+RAM_TOTAL=$(free -h | awk '/Mem:/ {print $2}')
+CPU_CORES=$(nproc)
+
+echo -e "${YELLOW}🖥️ OS:${NC} ${OS_NAME}"
+echo -e "${YELLOW}💾 RAM:${NC} ${RAM_TOTAL}"
+echo -e "${YELLOW}🧠 CPU:${NC} ${CPU_CORES} Cores"
 
 sleep 2
 
@@ -83,31 +110,36 @@ echo -e "${RED}║ [4] ❌ Exit Installer           ║${NC}"
 echo -e "${BLUE}${BOLD}╚══════════════════════════════════╝${NC}"
 
 echo ""
-read -p "👉 Select Option: " option
 
-case $option in
+if [[ ! -t 0 ]]; then
+    exec < /dev/tty
+fi
+
+read -r -p "👉 Select Option: " option
+
+case "$option" in
 
 1)
 clear
 
-echo -e "${MAGENTA}🚀 Starting AstroWax Panel Installation...${NC}"
+echo -e "${MAGENTA}${BOLD}🚀 STARTING ASTROWAX PANEL INSTALLATION 🚀${NC}"
 sleep 2
 
-echo -e "${CYAN}📦 Updating Packages...${NC}"
+echo -e "${CYAN}📦 Updating Package Index...${NC}"
 sudo apt-get update -y
 
-echo -e "${CYAN}📦 Installing Dependencies...${NC}"
-sudo apt-get install -y software-properties-common curl git unzip build-essential libssl-dev python3-pip
+echo -e "${CYAN}📦 Installing Base Dependencies...${NC}"
+sudo apt-get install -y software-properties-common curl git unzip build-essential libssl-dev python3-pip npm
 
 echo -e "${CYAN}🐍 Installing Python 3.11...${NC}"
 sudo add-apt-repository ppa:deadsnakes/ppa -y
 sudo apt-get update -y
 sudo apt-get install -y python3.11 python3.11-dev python3.11-distutils
 
-echo -e "${CYAN}⚡ Installing PM2...${NC}"
+echo -e "${CYAN}⚡ Installing PM2 Process Manager...${NC}"
 sudo npm install -g pm2
 
-echo -e "${CYAN}📦 Configuring Python Environment...${NC}"
+echo -e "${CYAN}🧠 Configuring Python Environment...${NC}"
 /usr/bin/python3.11 -m pip install setuptools
 
 export PYTHON=/usr/bin/python3.11
@@ -115,9 +147,8 @@ export npm_config_python=/usr/bin/python3.11
 export NODE_GYP_FORCE_PYTHON=/usr/bin/python3.11
 
 echo -e "${CYAN}🟢 Installing NodeJS v20...${NC}"
-source ~/.bashrc
+
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-source ~/.bashrc
 
 export NVM_DIR="$HOME/.nvm"
 source "$NVM_DIR/nvm.sh"
@@ -125,37 +156,40 @@ source "$NVM_DIR/nvm.sh"
 nvm install 20
 nvm use 20
 
-echo -e "${CYAN}📥 Cloning AstroWax Panel...${NC}"
+echo -e "${CYAN}📥 Downloading AstroWax Panel...${NC}"
+
 cd ~
 rm -rf AstroWax-Panel
 
 git clone https://github.com/AstroVoidHostDev/AstroWax-Panel
 
-cd AstroWax-Panel
+cd AstroWax-Panel || exit
 
-echo -e "${CYAN}📦 Extracting Files...${NC}"
+echo -e "${CYAN}📦 Extracting Panel Files...${NC}"
 unzip -o panel.zip
 
-cd panel
+cd panel || exit
 
-echo -e "${CYAN}🧹 Cleaning Cache...${NC}"
+echo -e "${CYAN}🧹 Cleaning Cache Files...${NC}"
 rm -rf node_modules package-lock.json
 npm cache clean --force
 
-echo -e "${CYAN}📦 Installing Node Modules...${NC}"
+echo -e "${CYAN}📦 Installing Dependencies...${NC}"
 npm install --legacy-peer-deps
 
-echo -e "${CYAN}🧠 Installing SQLite Modules...${NC}"
+echo -e "${CYAN}🧠 Installing SQLite Components...${NC}"
 npm install sqlite3@5.1.6 connect-sqlite3 --build-from-source
 
-echo -e "${CYAN}🌱 Running Database Seeder...${NC}"
+echo -e "${CYAN}🌱 Running Seeder...${NC}"
 npm run seed
 
 echo -e "${CYAN}👤 Creating Admin User...${NC}"
 npm run createUser
 
-echo -e "${CYAN}🚀 Starting Panel With PM2...${NC}"
-pm2 delete astrowax-panel 2>/dev/null
+echo -e "${CYAN}🚀 Launching AstroWax Panel With PM2...${NC}"
+
+pm2 delete astrowax-panel >/dev/null 2>&1
+
 pm2 start node --name astrowax-panel -- .
 
 pm2 save
@@ -163,42 +197,44 @@ pm2 save
 echo ""
 echo -e "${GREEN}${BOLD}🎉 PANEL INSTALLED SUCCESSFULLY 🎉${NC}"
 echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-echo -e "${GREEN}✅ Panel Running 24/7 With PM2${NC}"
-echo -e "${GREEN}✅ Dependencies Installed${NC}"
+echo -e "${GREEN}✅ Panel Running 24/7${NC}"
+echo -e "${GREEN}✅ PM2 Protection Enabled${NC}"
 echo -e "${GREEN}✅ Database Ready${NC}"
-echo -e "${GREEN}✅ Setup Complete${NC}"
+echo -e "${GREEN}✅ Dependencies Installed${NC}"
+echo -e "${GREEN}🚀 Deployment Completed${NC}"
 echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 
+pause_screen
 ;;
 
 2)
 clear
 
-echo -e "${MAGENTA}🌐 Starting WaxDaemon Node Installation...${NC}"
+echo -e "${MAGENTA}${BOLD}🌐 STARTING WAXDAEMON INSTALLATION 🌐${NC}"
 sleep 2
 
-echo -e "${CYAN}📦 Updating Packages...${NC}"
+echo -e "${CYAN}📦 Updating Package Index...${NC}"
 sudo apt-get update -y
 
 echo -e "${CYAN}📦 Installing Required Packages...${NC}"
 sudo apt-get install -y git zip unzip curl nodejs npm --no-install-recommends
 
-echo -e "${CYAN}⚡ Installing PM2...${NC}"
+echo -e "${CYAN}⚡ Installing PM2 Process Manager...${NC}"
 sudo npm install -g pm2
 
-echo -e "${CYAN}📥 Cloning WaxDaemon...${NC}"
+echo -e "${CYAN}📥 Downloading WaxDaemon...${NC}"
 
 cd ~
 rm -rf WaxDaemon
 
 git clone https://github.com/AstroVoidHostDev/WaxDaemon
 
-cd WaxDaemon
+cd WaxDaemon || exit
 
 echo -e "${CYAN}📦 Extracting WaxDaemon Files...${NC}"
 unzip -o waxdaemon.zip
 
-cd daemon/daemon
+cd daemon/daemon || exit
 
 mv -f index.js.txt index.js 2>/dev/null
 
@@ -207,31 +243,38 @@ npm install
 
 echo ""
 echo -e "${YELLOW}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-echo -e "${YELLOW}🔑 Paste Your Configure Command${NC}"
+echo -e "${YELLOW}🔑 PASTE YOUR CONFIGURE COMMAND${NC}"
 echo -e "${YELLOW}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 echo ""
 echo -e "${CYAN}Example:${NC}"
 echo "npm run configure -- --panel https://yourdomain --key xxxxxxxx-xxxx-xxxx"
 echo ""
-echo -e "${GREEN}⚡ Panel URL Will Auto Change To:${NC} http://localhost:3000"
+echo -e "${GREEN}⚡ Panel URL Auto Converts To:${NC} http://localhost:3000"
 echo ""
 
-read -p "👉 Paste Command Here: " usercmd
+if [[ ! -t 0 ]]; then
+    exec < /dev/tty
+fi
+
+read -r -p "👉 Paste Command Here: " usercmd
 
 fixedcmd=$(echo "$usercmd" | sed -E 's#--panel https?://[^ ]+#--panel http://localhost:3000#g')
 
 echo ""
-echo -e "${CYAN}🧠 Processing Command...${NC}"
+echo -e "${CYAN}🧠 Processing Configuration...${NC}"
 sleep 2
 
-echo -e "${GREEN}✅ Domain Replaced Successfully${NC}"
+echo -e "${GREEN}✅ Panel URL Converted Successfully${NC}"
 sleep 1
 
-echo -e "${CYAN}🚀 Running Configuration...${NC}"
+echo -e "${CYAN}🚀 Executing Configure Command...${NC}"
+
 eval "$fixedcmd"
 
-echo -e "${CYAN}🚀 Starting WaxDaemon With PM2...${NC}"
-pm2 delete waxdaemon 2>/dev/null
+echo -e "${CYAN}🚀 Launching WaxDaemon With PM2...${NC}"
+
+pm2 delete waxdaemon >/dev/null 2>&1
+
 pm2 start index.js --name waxdaemon
 
 pm2 save
@@ -240,16 +283,18 @@ echo ""
 echo -e "${GREEN}${BOLD}🎉 NODE INSTALLED SUCCESSFULLY 🎉${NC}"
 echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 echo -e "${GREEN}✅ WaxDaemon Running 24/7${NC}"
-echo -e "${GREEN}✅ Configuration Applied${NC}"
 echo -e "${GREEN}✅ PM2 Protection Enabled${NC}"
+echo -e "${GREEN}✅ Configuration Applied${NC}"
+echo -e "${GREEN}🚀 Deployment Completed${NC}"
 echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 
+pause_screen
 ;;
 
 3)
 clear
 
-echo -e "${MAGENTA}⭐ Opening Official Channel...${NC}"
+echo -e "${MAGENTA}${BOLD}⭐ OPENING OFFICIAL CHANNEL ⭐${NC}"
 sleep 2
 
 echo ""
@@ -262,12 +307,13 @@ echo -e "${WHITE}👉 https://www.youtube.com/@ITZ_YT_ANSH_OFFICIAL${NC}"
 echo ""
 echo -e "${GREEN}❤️ Thanks For Supporting AstroVoidHost${NC}"
 
+pause_screen
 ;;
 
 4)
 clear
 
-echo -e "${RED}"
+echo -e "${RED}${BOLD}"
 echo "💀 Shutting Down Installer..."
 sleep 1
 echo "🌌 Saving Session..."
@@ -276,12 +322,13 @@ echo "🚀 Goodbye Legend..."
 sleep 1
 echo -e "${NC}"
 
-exit
-
+exit 0
 ;;
 
 *)
-echo -e "${RED}❌ Invalid Option Selected!${NC}"
+echo ""
+echo -e "${RED}❌ Invalid Option Selected! Please Choose 1-4${NC}"
+sleep 1
 ;;
 
 esac
